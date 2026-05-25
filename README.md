@@ -1,4 +1,4 @@
-# 🧠 ai_skills
+# 🧠 AI Skills
 
 > A collection of **skills for AIs like Claude** — reusable, self-contained capabilities you can drop into Claude Code, Cowork, or any agent that supports the open Skill format. Each skill is just a folder with a `SKILL.md` and optional scripts, so they're easy to read, share, and load on demand straight from GitHub.
 
