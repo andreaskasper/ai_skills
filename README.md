@@ -77,7 +77,8 @@ curl -s https://api.github.com/repos/andreaskasper/ai_skills/contents/skills | j
 | [`github-repo-audit`](skills/github-repo-audit/) | Sort all repos of a user/org into archive candidates, missing docs and worth-working-on, with a bundled audit script. | optional `GITHUB_TOKEN` |
 | [`readme-refresh`](skills/readme-refresh/) | Check a README against the actual code (stack, commands, links, badges) and rewrite it without inventing features. | – |
 | [`grill-me`](skills/grill-me/) | Stress-test a plan or idea with one pointed question at a time, each with a recommended answer. | – |
-| [`humanize-german`](skills/humanize-german/) | Writing rules for German texts that avoid the typical signs of AI writing (based on Wikipedia's guides). | – |
+| [`vermenschlichen`](skills/vermenschlichen/) | Schreibregeln für deutsche Texte ohne typische KI-Muster (in German, based on Wikipedia's guides). | – |
+| [`humanize-english`](skills/humanize-english/) | The English counterpart: writing rules for English texts without AI tell-tale patterns (based on Wikipedia's *Signs of AI writing*). | – |
 | [`museum-digital`](skills/museum-digital/) | Search museum-digital's open museum object database: objects, museums, collections, LIDO/OAI/IIIF, with a Python client. | – |
 | [`avefi`](skills/avefi/) | Search the AVefi film database (German film archives) and resolve persistent film identifiers. | – |
 | [`wikidata`](skills/wikidata/) | Search, SPARQL-query and edit Wikidata, including checks for deleted/merged Q-IDs. | BotPassword for writes |
