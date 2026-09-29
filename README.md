@@ -35,7 +35,8 @@ The AI reads the `name` + `description` at all times, pulls the full `SKILL.md` 
 - [x] 🤖 **Model-agnostic** — works with Claude Code, Cowork, the Claude Agent SDK, and any agent that supports the Skill format
 - [x] ⚡ **Load on demand from GitHub** — grab a single skill over plain HTTPS, no `git clone` needed (see the [`github-skill-loader`](skills/github-skill-loader/) skill)
 - [x] 🛠️ **Built with skill-creator** — authored and iterated using Anthropic's official skill-creator workflow
-- [x] 🔓 **Public & MIT-friendly** — read, fork, and reuse freely
+- [x] 🔓 **Public & MIT-licensed** — read, fork, and reuse freely
+- [x] 🔐 **No secrets inside** — credentials come from environment variables, checked in CI
 
 ---
 
@@ -70,9 +71,18 @@ curl -s https://api.github.com/repos/andreaskasper/ai_skills/contents/skills | j
 
 ### Available Skills
 
-| Skill | Description |
-|---|---|
-| [`github-skill-loader`](skills/github-skill-loader/) | Browse this repo and load/install a single skill from GitHub via raw content + the Contents/Trees API — no clone required. |
+| Skill | Description | Needs |
+|---|---|---|
+| [`github-skill-loader`](skills/github-skill-loader/) | Browse this repo and load/install a single skill from GitHub via raw content + the Contents/Trees API — no clone required. | – |
+| [`github-repo-audit`](skills/github-repo-audit/) | Sort all repos of a user/org into archive candidates, missing docs and worth-working-on, with a bundled audit script. | optional `GITHUB_TOKEN` |
+| [`readme-refresh`](skills/readme-refresh/) | Check a README against the actual code (stack, commands, links, badges) and rewrite it without inventing features. | – |
+| [`grill-me`](skills/grill-me/) | Stress-test a plan or idea with one pointed question at a time, each with a recommended answer. | – |
+| [`humanize-german`](skills/humanize-german/) | Writing rules for German texts that avoid the typical signs of AI writing (based on Wikipedia's guides). | – |
+| [`museum-digital`](skills/museum-digital/) | Search museum-digital's open museum object database: objects, museums, collections, LIDO/OAI/IIIF, with a Python client. | – |
+| [`avefi`](skills/avefi/) | Search the AVefi film database (German film archives) and resolve persistent film identifiers. | – |
+| [`wikidata`](skills/wikidata/) | Search, SPARQL-query and edit Wikidata, including checks for deleted/merged Q-IDs. | BotPassword for writes |
+| [`pushover`](skills/pushover/) | Send push notifications to your phone, e.g. when a long task is done. | `PUSHOVER_APP_TOKEN`, `PUSHOVER_USER_KEY` |
+| [`qrcode-generator`](skills/qrcode-generator/) | Styled QR codes (colors, gradients, shapes, brand colors from a website) with an offline fallback. | – |
 
 > More skills are added over time. Run the listing command above for the live list.
 
@@ -86,7 +96,15 @@ New skills are authored with Anthropic's **skill-creator** (draft → test → i
 2. Add a `SKILL.md` with YAML frontmatter (`name`, `description`) and clear, imperative instructions.
 3. Make the `description` specific about **what** the skill does **and when** to trigger it — that field is the primary triggering mechanism.
 4. Bundle any helpers under `scripts/`, `references/`, or `assets/`.
-5. Add a row to the *Available Skills* table above.
+5. Read credentials from environment variables; never hard-code tokens, passwords or personal data.
+6. Add a row to the *Available Skills* table above.
+7. Run `python3 scripts/validate_skills.py` (the same check runs in CI on every push).
+
+---
+
+### Credentials
+
+Skills that talk to private APIs never contain keys. They read them from environment variables (listed in the *Needs* column and in each `SKILL.md`). Set them in your shell profile or agent settings, never commit them.
 
 ---
 
@@ -103,9 +121,9 @@ New skills are authored with Anthropic's **skill-creator** (draft → test → i
 
 - [x] Repository structure (`skills/`)
 - [x] `github-skill-loader` — load skills straight from GitHub
-- [ ] More general-purpose skills (research, formatting, automation)
+- [x] General-purpose skills (research, writing, automation)
 - [ ] Optional `install.sh` one-liner installer
-- [ ] CI check that validates every `SKILL.md` frontmatter
+- [x] CI check that validates every `SKILL.md` (frontmatter, README listing, secret scan)
 - [ ] A small index/manifest file for faster skill discovery
 
 ---
