@@ -84,6 +84,11 @@ curl -s https://api.github.com/repos/andreaskasper/ai_skills/contents/skills | j
 | [`wikidata`](skills/wikidata/) | Search, SPARQL-query and edit Wikidata, including checks for deleted/merged Q-IDs. | BotPassword for writes |
 | [`pushover`](skills/pushover/) | Send push notifications to your phone, e.g. when a long task is done. | `PUSHOVER_APP_TOKEN`, `PUSHOVER_USER_KEY` |
 | [`qrcode-generator`](skills/qrcode-generator/) | Styled QR codes (colors, gradients, shapes, brand colors from a website) with an offline fallback. | – |
+| [`changelog-writer`](skills/changelog-writer/) | Draft a Keep-a-Changelog section from git history and suggest the next semantic version. | – |
+| [`secret-scan`](skills/secret-scan/) | Find leaked keys, tokens and passwords in files and full git history (masked output), then rotate and clean up. | – |
+| [`citation-checker`](skills/citation-checker/) | Verify DOIs, ISBNs and URLs exist and check whether each source supports its claim. | optional `CROSSREF_MAILTO` |
+| [`gnd-lookup`](skills/gnd-lookup/) | Search and reconcile GND authority records (persons, bodies, places, subjects) via lobid.org. | – |
+| [`rechnung-pruefen`](skills/rechnung-pruefen/) | Deutsche Rechnungen auf Pflichtangaben (§ 14 UStG), Sonderfälle und E-Rechnungspflicht prüfen, Beträge nachrechnen (in German). | – |
 
 > More skills are added over time. Run the listing command above for the live list.
 
