@@ -3,7 +3,7 @@
 Validate every skill under skills/:
   * SKILL.md exists and starts with YAML frontmatter
   * `name` matches the folder, lowercase letters/digits/hyphens, <= 64 chars
-  * `description` present, <= 1024 chars
+  * `description` present, <= 1024 chars, valid YAML (no unquoted ': ')
   * README.md lists the skill in the "Available Skills" table
   * no obvious secrets (hard-coded tokens, passwords, private keys)
 Exit code 1 on any error. Standard library only.
@@ -35,9 +35,15 @@ def frontmatter(text):
         if kv:
             key = kv.group(1)
             data[key] = kv.group(2).strip()
+            raw = data[key]
+            if raw and raw[0] not in "\"'>|" and (": " in raw or " #" in raw):
+                data.setdefault("_yaml_errors", []).append(
+                    f"unquoted '{key}' contains ': ' or ' #' (invalid YAML); quote it or rephrase")
         elif key and line.startswith((" ", "\t")):
             data[key] = (data[key] + " " + line.strip()).strip()
-    for k, v in data.items():
+    for k, v in list(data.items()):
+        if k.startswith("_"):
+            continue
         v = re.sub(r"^[>|]-?\s*", "", v)
         if len(v) >= 2 and v[0] == v[-1] and v[0] in "\"'":
             v = v[1:-1]
@@ -55,6 +61,8 @@ def main():
         fm = frontmatter(md.read_text(encoding="utf-8"))
         if fm is None:
             errors.append(f"{d.name}: no YAML frontmatter"); continue
+        for err in fm.get("_yaml_errors", []):
+            errors.append(f"{d.name}: {err}")
         name, desc = fm.get("name", ""), fm.get("description", "")
         if name != d.name:
             errors.append(f"{d.name}: name '{name}' does not match folder")
