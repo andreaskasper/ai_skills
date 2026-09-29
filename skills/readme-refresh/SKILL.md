@@ -1,6 +1,6 @@
 ---
 name: readme-refresh
-description: Check a repository's README against what the code actually contains and rewrite or create it so it is accurate, complete and useful: what the project is, how to install and run it, configuration, status and license. Use whenever someone wants to update, improve, fix, write or modernise a README, asks whether a README is outdated, or wants documentation for a repo that has none. Triggers include "update the README", "README refresh", "write a README", "is my README still correct", "README aktualisieren", "README überarbeiten", "schreib mir ein README", "Readme für das Repo". Works on a local checkout, a GitHub connector, or pasted text. Never invents features.
+description: Check a repository's README against what the code actually contains and rewrite or create it so it is accurate, complete and useful (what the project is, how to install and run it, configuration, status and license). Use whenever someone wants to update, improve, fix, write or modernise a README, asks whether a README is outdated, or wants documentation for a repo that has none. Triggers include "update the README", "README refresh", "write a README", "is my README still correct", "README aktualisieren", "README überarbeiten", "schreib mir ein README", "Readme für das Repo". Works on a local checkout, a GitHub connector, or pasted text. Never invents features.
 ---
 
 # README Refresh
