@@ -5,7 +5,7 @@ Rules for anyone (human or agent) adding or changing skills in this repo.
 ## Hard rules
 
 - **No secrets, ever.** No API keys, tokens, passwords, bot passwords, private keys, cookies or personal data (names, addresses, phone numbers of real people) in any file. Skills read credentials from environment variables and document them in a "Setup" section with placeholders like `YOUR_API_KEY`.
-- Run `python3 scripts/validate_skills.py` before every commit. It checks frontmatter, the README listing and scans for secrets. Also run `python3 skills/secret-scan/scripts/scan.py . --history` before pushing.
+- Run `python3 scripts/validate_skills.py` before every commit. It checks frontmatter, the README listing and scans for secrets. Also run `python3 skills/secret-scan/scripts/secret_scan.py .` (with history, inside a git checkout) before pushing.
 - Never force-push or rewrite history without the owner's explicit OK.
 
 ## Skill conventions
