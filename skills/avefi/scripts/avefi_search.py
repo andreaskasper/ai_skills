@@ -14,6 +14,7 @@ Usage:
 import argparse, json, sys, unicodedata, urllib.request
 
 ENDPOINT = "https://www.av-efi.net/rest/v1/frontend/search"
+USER_AGENT = "ai_skills-avefi/1.0 (+https://github.com/andreaskasper/ai_skills)"
 
 
 def search(query, index="works", hits_per_page=20, page=0, facet_filters=None):
@@ -23,7 +24,7 @@ def search(query, index="works", hits_per_page=20, page=0, facet_filters=None):
     body = [{"indexName": index, "params": params}]
     req = urllib.request.Request(
         ENDPOINT, data=json.dumps(body).encode("utf-8"),
-        headers={"Content-Type": "application/json"}, method="POST")
+        headers={"Content-Type": "application/json", "User-Agent": USER_AGENT}, method="POST")
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)["results"][0]
 
