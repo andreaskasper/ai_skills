@@ -142,7 +142,7 @@ Search is **fuzzy** and returns near-misses ("Tango-Traum" for "Tamango"). For a
 
 ```js
 const norm = s => (s||'').toLowerCase()
-  .replace(/ß/g,'ss').normalize('NFD').replace(/[̀-ͯ]/g,'')
+  .replace(/ß/g,'ss').normalize('NFD').replace(/\p{M}/gu,'')
   .replace(/[.,:;!?"'`´’()\[\]\-–—…]/g,' ').replace(/\s+/g,' ').trim();
 // match if norm(primary or alternative title) === norm(searched title)
 ```
