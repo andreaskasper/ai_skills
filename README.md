@@ -75,6 +75,7 @@ curl -s https://api.github.com/repos/andreaskasper/ai_skills/contents/skills | j
 |---|---|---|
 | [`github-skill-loader`](skills/github-skill-loader/) | Browse this repo and load/install a single skill from GitHub via raw content + the Contents/Trees API — no clone required. | – |
 | [`github-repo-audit`](skills/github-repo-audit/) | Sort all repos of a user/org into archive candidates, missing docs and worth-working-on, with a bundled audit script. | optional `GITHUB_TOKEN` |
+| [`skill-self-improvement`](skills/skill-self-improvement/) | Turn corrections and failed steps from a skill run into a clean, tested improvement of that skill (folded in, not appended) and hand it over for approval. | – |
 | [`readme-refresh`](skills/readme-refresh/) | Check a README against the actual code (stack, commands, links, badges) and rewrite it without inventing features. | – |
 | [`grill-me`](skills/grill-me/) | Stress-test a plan or idea with one pointed question at a time, each with a recommended answer. | – |
 | [`vermenschlichen`](skills/vermenschlichen/) | Schreibregeln für deutsche Texte ohne typische KI-Muster (in German, based on Wikipedia's guides). | – |

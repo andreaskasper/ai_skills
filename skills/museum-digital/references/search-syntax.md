@@ -2,7 +2,15 @@
 
 The object search `/json/objects?s=…` (and `/export/json/{query}`, `/json/object-facet-search/{query}`, `/json/objects-per-museum?s=…`) uses a structured query language of `key:value` tokens.
 
-Behaviour verified against `nat.museum-digital.de` (06/2026).
+Behaviour verified against `nat.museum-digital.de` (10/2026).
+
+Contents:
+- Basic rules
+- Keys (identity, content fields, linked entities, tags, flags, rights, alphabetical range)
+- Resolving IDs (typeahead, query negotiation)
+- Negation
+- Checking a query
+- Facets for a result set
 
 ## Basic rules
 
@@ -94,34 +102,32 @@ curl -s "https://nat.museum-digital.de/json/objects_get_query_string?extendQuery
 
 ## Negation
 
-The DSL can exclude tokens, but a **positive search of the same category must come first**. Verified (nat, 06/2026):
+The DSL can exclude tokens, but a **positive search of the same category must come first**. Example counts (they grow with the holdings; the arithmetic holds):
 
 **Text category: works with a `-` prefix:**
 ```
-fulltext:Maria                 -> 15,235
-fulltext:Maria type:Gemälde    ->    494   (Maria AND painting)
-fulltext:Maria -type:Gemälde   -> 14,741   (= 15,235 − 494, exactly excluded)
-fulltext:Maria -Gemälde        -> 13,722   (full text "Gemälde" excluded)
+fulltext:Maria                 -> 16,655
+fulltext:Maria type:Gemälde    ->    496   (Maria AND painting)
+fulltext:Maria -type:Gemälde   -> 16,159   (= 16,655 − 496, exactly excluded)
+fulltext:Maria -Gemälde        -> fewer    (full text "Gemälde" excluded)
 ```
 
 **ID categories (`place`, `tag`, `persinst`, `institution` …):** plain `-place:198` did **not** reliably exclude in tests (returned the full positive set). For ID-based exclusion, determine the complement via **facets** (`object-facet-search`) or set the filter in the HTML frontend and reuse the resulting `s` URL.
 
 **Always check `total`** to confirm the negation had the expected effect.
 
-## Verified examples (nat, 06/2026)
+## Checking a query
 
-| Query | `total` |
+Totals change daily, so judge a query by how `total` moves, not by a fixed number:
+
+| Query | Expected `total` |
 |---|---|
-| `fulltext:Dürer` | 5,198 |
-| `fulltext:Dürer has_resource` | 4,896 |
-| `type:Gemälde` | 12,858 |
-| `place:61` (Berlin) | 84,584 |
-| `institution:751` (Kunsthalle Bremen) | 28,798 |
-| `type:Gemälde place:61` | 328 |
-| `place:61 institution:751` | 34 |
-| `tag_material:13314` | 3 |
-
-Numbers grow with the holdings; the **relations** (combining shrinks the set) are the correctness check.
+| `fulltext:Dürer has_resource` | smaller than `fulltext:Dürer` |
+| `fulltext:Dürer has_resource:1` | same as `fulltext:Dürer` (the `:1` disables the flag) |
+| `type:Gemälde place:61` | smaller than either token alone |
+| `place:61 institution:751` | small (Berlin-linked objects in Kunsthalle Bremen) |
+| `place:61institution:751` | **all objects**: glued tokens are ignored |
+| `place:61 -place:198` | same as `place:61`: ID negation does not work |
 
 ## Facets for a result set
 

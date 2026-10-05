@@ -1,10 +1,20 @@
 # museum-digital: data model and response structures
 
-Field meanings of the main JSON responses, image URL scheme, licence fields and the event model. Verified against `nat.museum-digital.de` (06/2026). Some field names are German (`objekt_*`); they are listed as the API returns them.
+Field meanings of the main JSON responses, image URL scheme, licence fields and the event model. Verified against `nat.museum-digital.de` (10/2026). Some field names are German (`objekt_*`); they are listed as the API returns them.
+
+Contents:
+- navlang (output language)
+- Object search hits
+- Object detail: `object_images[]`, `object_events[]`, `licence`
+- Image URLs
+- Institution, collection, series
+- Exhibitions / events
+- `/json/home` (instance statistics)
+- Cross search
 
 ## navlang (output language)
 
-`?navlang=<code>` (or `Accept-Language`): `ar, cs, de, en, fr, hi, hu, id, it, kn, pl, pt, ru, ta, te, tr, tl, uk`. The `expected_language`/`langs` field shows which languages an object actually has.
+Codes and choice: SKILL.md section 4. The `expected_language`/`langs` field shows which languages an object actually has.
 
 ## Object search hits (`/json/objects`, flat list)
 

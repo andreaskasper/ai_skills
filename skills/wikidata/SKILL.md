@@ -1,38 +1,25 @@
 ---
 name: wikidata
-description: Read from and write to Wikidata, the free collaborative knowledge base. Use whenever the user wants to search Wikidata entities, fetch structured data about items or properties, run SPARQL queries against the Wikidata Query Service, check stored Q-IDs for deletions or merges, or edit data (labels, descriptions, aliases, statements, new items). Triggers include "search Wikidata", "Q-ID", "P-ID", "SPARQL", "Wikidata item", "create Wikidata item", "add a statement", "Wikidata-Eintrag bearbeiten", "Wikidata-Item anlegen", "Q-IDs prüfen". Reading needs no login; writing uses a BotPassword from environment variables. Always use this skill before raw curl calls to Wikidata.
+description: Read from and write to Wikidata, the free collaborative knowledge base. Use whenever the user wants to search Wikidata entities, fetch structured data about items or properties, run SPARQL queries against the Wikidata Query Service, check stored Q-IDs for deletions or merges, or edit data (labels, descriptions, aliases, statements, new items). Triggers include "search Wikidata", "Q-ID", "P-ID", "SPARQL", "Wikidata item", "create Wikidata item", "add a statement", "Wikidata-Eintrag bearbeiten", "Wikidata-Item anlegen", "Wikidata abfragen", "Q-IDs prüfen". Reading needs no login; writing uses a credential proxy or a BotPassword from environment variables, after the user confirms the edits. Use this skill before raw curl calls to Wikidata.
 ---
 
 # Wikidata
 
-Work with Wikidata through:
-1. **MediaWiki Action API** for search, read and write
-2. **Wikidata Query Service (SPARQL)** for complex queries
-3. **BotPassword login** for writes
+Two services: the **MediaWiki Action API** (`https://www.wikidata.org/w/api.php`) for search, read and write, and the **Wikidata Query Service** (`https://query.wikidata.org/sparql`) for SPARQL. Reading needs no account. Writing is covered in `references/writing.md`.
 
-| Service | URL |
-|---|---|
-| Action API | `https://www.wikidata.org/w/api.php` |
-| SPARQL | `https://query.wikidata.org/sparql` |
+## Self-improvement
+If a run deviates from this skill (an error or field not covered here, a changed UI, you had to improvise, the user corrects the result), finish the task first, then load the `skill-self-improvement` skill and propose an improvement. Don't edit the skill files directly: in Claude apps they are a read-only copy. Typical signals here: an API error code missing from the tables, a login or token step failing as documented, an edit the user had to revert, a rate-limit or lag behaviour different from what is described.
 
 ## Setup
 
-Reading works without an account. Every request **must** send a descriptive `User-Agent` with contact info; Wikidata blocks requests without one.
-
-For writing, create a BotPassword at [Special:BotPasswords](https://www.wikidata.org/wiki/Special:BotPasswords) with the grants "Basic rights", "Edit existing pages" and "Create, edit, and move pages" (nothing more). Provide it via environment variables, **never** in this file or the chat:
+Every request sends a descriptive `User-Agent` with contact information; Wikimedia blocks or throttles requests without one.
 
 ```bash
-export WIKIDATA_BOT_USER="YourAccount@YourBotName"    # login name shown on Special:BotPasswords
-export WIKIDATA_BOT_PASSWORD="…"                       # generated bot password
-export WIKIDATA_CONTACT="you@example.org"              # for the User-Agent
-```
-
-```bash
-UA="WikidataSkill/1.0 (${WIKIDATA_CONTACT:-contact-missing})"
+UA="WikidataSkill/1.0 (${WIKIDATA_CONTACT:-https://github.com/andreaskasper/ai_skills})"
 API="https://www.wikidata.org/w/api.php"
 ```
 
-> Your **main account password does not work for the API** when 2FA or modern login is active: `action=login` answers `Aborted — Authentication requires user interaction`. Only BotPasswords are suitable for automation. If one expires or is revoked, a human has to create a new one (the page asks for password re-confirmation).
+`WIKIDATA_CONTACT` is the operator's e-mail or user page; set it for anything beyond occasional reads. Credentials for writing: see `references/writing.md` (credential proxy first, then environment variables).
 
 ## 1. Search entities
 
@@ -42,7 +29,7 @@ curl -s "$API" -H "User-Agent: $UA" \
   --data-urlencode "language=en" --data-urlencode "type=item" \
   --data-urlencode "limit=10" --data-urlencode "format=json"
 ```
-`type`: `item` (Q-IDs) or `property` (P-IDs). Response: `id`, `label`, `description`, `aliases`, `url`.
+`type`: `item` (Q-IDs) or `property` (P-IDs; use this to find the right property instead of guessing). Response: `id`, `label`, `description`, `aliases`, `url`.
 
 ## 2. Fetch entity data
 
@@ -54,9 +41,9 @@ curl -s "$API" -H "User-Agent: $UA" \
 ```
 
 ```
-entities.Q42.labels.en.value                 → English label
+entities.Q42.labels.en.value                             → English label
 entities.Q42.claims.P31[0].mainsnak.datavalue.value.id   → value Q-ID
-entities.Q42.claims.P31[0].id                → statement GUID (needed for updates)
+entities.Q42.claims.P31[0].id                            → statement GUID (needed for updates)
 ```
 
 ### Detect deleted and merged IDs
@@ -86,155 +73,22 @@ curl -s -G "https://query.wikidata.org/sparql" -H "User-Agent: $UA" \
 
 ```sparql
 VALUES ?item { wd:Q123 wd:Q456 }                  # check several known items
-?item wdt:P31 wd:QXXXX .                            # instance of
-SERVICE wikibase:label { bd:serviceParam wikibase:language 'en,de' }
+SERVICE wikibase:label { bd:serviceParam wikibase:language 'en,de' }   # needed for ?xLabel
 OPTIONAL { ?item wdt:P856 ?website }               # make missing values visible
-FILTER(YEAR(?born) > 1900)
 ```
 CSV: `-H "Accept: text/csv"`.
 
-**SPARQL reads from a lagging replica.** Right after a write it often still shows the old value. Verify writes with `wbgetentities` or `list=usercontribs`, not SPARQL.
+**SPARQL reads from a lagging replica.** Right after a write it often still shows the old value. Verify writes with `wbgetentities`, not SPARQL.
 
-## 4. Log in (writes only)
+## 4. Rate limits
 
-```bash
-[ -n "$WIKIDATA_BOT_USER" ] && [ -n "$WIKIDATA_BOT_PASSWORD" ] || echo "BotPassword env vars missing"
-JAR=$(mktemp)
+The Action API answers **HTTP 429** with a plain-text body ("You are making too many requests to the API") instead of JSON. Shared cloud IPs hit this even at low volume (seen 10/2026). Then: wait and retry with backoff, do reads via SPARQL where possible (it was still answering in that situation), or run the calls from the user's machine. Don't parse the 429 body as JSON.
 
-TOKEN=$(curl -s "$API" -H "User-Agent: $UA" -c "$JAR" \
-  --data-urlencode "action=query" --data-urlencode "meta=tokens" --data-urlencode "type=login" \
-  --data-urlencode "format=json" | python3 -c "import sys,json;print(json.load(sys.stdin)['query']['tokens']['logintoken'])")
+## 5. Writing
 
-curl -s "$API" -H "User-Agent: $UA" -b "$JAR" -c "$JAR" \
-  --data-urlencode "action=login" --data-urlencode "lgname=$WIKIDATA_BOT_USER" \
-  --data-urlencode "lgpassword=$WIKIDATA_BOT_PASSWORD" --data-urlencode "lgtoken=$TOKEN" \
-  --data-urlencode "format=json"
+Before any write, show the user the planned edits (item, property, old → new value, edit summary) and wait for an explicit OK; edits are public and attributed to the account. Then follow `references/writing.md`: credentials, login, labels/aliases, statements and value formats, creating items, error codes, maxlag and pacing, verification.
 
-CSRF=$(curl -s "$API" -H "User-Agent: $UA" -b "$JAR" \
-  --data-urlencode "action=query" --data-urlencode "meta=tokens" --data-urlencode "format=json" \
-  | python3 -c "import sys,json;print(json.load(sys.stdin)['query']['tokens']['csrftoken'])")
-```
-
-Expected login response: `{"login":{"result":"Success","lgusername":"YourAccount"}}`; `lgusername` is the main account, not the bot name. That's correct.
-
-Check rights: `action=query&meta=userinfo&uiprop=rights|groups` must include `edit`. A missing `writeapi` is normal for BotPasswords and harmless.
-
-Sessions last about 30 minutes; on `badtoken` repeat the login. Delete the cookie jar when done: `rm -f "$JAR"`.
-
-## 5. Labels, descriptions, aliases
-
-```bash
-curl -s "$API" -H "User-Agent: $UA" -b "$JAR" \
-  --data-urlencode "action=wbsetlabel" --data-urlencode "id=Q12345" \
-  --data-urlencode "language=en" --data-urlencode "value=My label" \
-  --data-urlencode "token=$CSRF" --data-urlencode "format=json"
-# description: action=wbsetdescription (same shape)
-# aliases:     action=wbsetaliases with add=Alias1|Alias2
-```
-
-## 6. Statements
-
-Create:
-```bash
-curl -s "$API" -H "User-Agent: $UA" -b "$JAR" \
-  --data-urlencode "action=wbcreateclaim" --data-urlencode "entity=Q12345" \
-  --data-urlencode "snaktype=value" --data-urlencode "property=P31" \
-  --data-urlencode 'value={"entity-type":"item","numeric-id":5}' \
-  --data-urlencode "token=$CSRF" --data-urlencode "format=json"
-```
-
-Change an existing value (for corrections, **don't** add a second statement; replace the value using the GUID from `claims.P856[0].id`):
-```bash
-curl -s "$API" -H "User-Agent: $UA" -b "$JAR" \
-  --data-urlencode "action=wbsetclaimvalue" \
-  --data-urlencode "claim=Q12345\$6db78f39-41f0-c633-c08c-78780430850e" \
-  --data-urlencode "snaktype=value" --data-urlencode 'value="https://example.org/"' \
-  --data-urlencode "summary=Update official website (P856): old domain redirects" \
-  --data-urlencode "token=$CSRF" --data-urlencode "format=json"
-```
-
-Two traps: the `$` in the GUID must be escaped (`\$`) inside double quotes, otherwise the claim ID is empty. And string values need **their own quotes inside the JSON value**: `value="https://…"` including the quotes.
-
-Other value types:
-```
-String:      "My text"
-Time:        {"time":"+1952-03-11T00:00:00Z","timezone":0,"before":0,"after":0,"precision":11,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}
-Coordinates: {"latitude":48.14,"longitude":11.58,"precision":0.0001,"globe":"http://www.wikidata.org/entity/Q2"}
-Quantity:    {"amount":"+1000000","unit":"1"}
-```
-Time precision: 9 = year, 10 = month, 11 = day.
-
-## 7. Create an item
-
-```bash
-curl -s "$API" -H "User-Agent: $UA" -b "$JAR" \
-  --data-urlencode "action=wbeditentity" --data-urlencode "new=item" \
-  --data-urlencode 'data={
-    "labels": {"en": {"language":"en","value":"New item"}, "de": {"language":"de","value":"Neues Item"}},
-    "descriptions": {"en": {"language":"en","value":"short description"}},
-    "claims": {"P31": [{"mainsnak":{"snaktype":"value","property":"P31",
-      "datavalue":{"value":{"entity-type":"item","numeric-id":5},"type":"wikibase-entityid"}},
-      "type":"statement","rank":"normal"}]}
-  }' \
-  --data-urlencode "token=$CSRF" --data-urlencode "format=json"
-```
-Search first (section 1) to avoid creating duplicates.
-
-## 8. Principle: when in doubt, leave it out
-
-An empty property is better than a wrong one.
-- **Verify the item is the intended one** before writing: look at labels, description and sitelinks; don't trust a stored Q-ID blindly. An item without label and claims is almost always a mistake.
-- **Don't derive values** (issue numbers, founding years) by counting backwards. No source, no statement.
-- **Edit summaries in English, stating the reason**, not just the value: "Update official website (P856): old domain redirects" instead of "update P856".
-- Show the user the planned edits before running a batch.
-
-## 9. Errors
-
-| Code | Cause | Fix |
-|---|---|---|
-| `badtoken` | CSRF token expired | log in again |
-| `notloggedin` | session expired | log in again |
-| `no-such-entity` | ID doesn't exist | check for deletion/merge |
-| `invalid-json` | malformed `data`/`value` | validate JSON |
-| `modification-failed` | edit blocked | check rights / constraints |
-| `editconflict` | concurrent edit | retry with fresh token |
-| `maxlag` | replication lag | see below |
-| `Aborted` at login | main password used | use the BotPassword |
-
-## 10. maxlag and pacing
-
-`maxlag=5` is meant for **bulk runs** and aborts even at normal lag ("Waiting for wdqs…: 155 seconds lagged"); the query-service lag often throttles even when the database is healthy.
-- A few single edits: omit `maxlag`.
-- Bulk runs: `maxlag=5`, on abort wait 30–60 s before retrying.
-- Pause 1 s between writes, 2–3 s in bulk.
-- Check with `wbgetentities` whether the value is already set before writing.
-
-## 11. Common properties
-
-| P-ID | Meaning | Type |
-|---|---|---|
-| P31 | instance of | item |
-| P279 | subclass of | item |
-| P18 | image | media |
-| P569 / P570 | date of birth / death | time |
-| P19 | place of birth | item |
-| P27 | country of citizenship | item |
-| P106 | occupation | item |
-| P571 | inception | time |
-| P577 | publication date | time |
-| P625 | coordinates | geo |
-| P856 | official website | URL |
-| P17 | country | item |
-| P131 | located in admin. entity | item |
-
-## 12. Verify after writing
-
-```bash
-curl -s "$API" -H "User-Agent: $UA" --data-urlencode "action=wbgetentities" \
-  --data-urlencode "ids=Q12345" --data-urlencode "props=claims" --data-urlencode "format=json"
-
-curl -s "$API" -H "User-Agent: $UA" --data-urlencode "action=query" --data-urlencode "list=usercontribs" \
-  --data-urlencode "ucuser=${WIKIDATA_BOT_USER%@*}" --data-urlencode "uclimit=5" \
-  --data-urlencode "ucprop=title|timestamp|comment" --data-urlencode "format=json"
-```
-Not via SPARQL (lagging replica, see section 3).
+Principle for every write: **when in doubt, leave it out.** An empty property is better than a wrong one.
+- Verify the item is the intended one (labels, description, sitelinks); don't trust a stored Q-ID blindly. An item without label and claims is almost always a mistake.
+- No source, no statement. Don't derive values (issue numbers, founding years) by counting backwards.
+- Edit summaries in English, stating the reason: "Update official website (P856): old domain redirects", not "update P856".
