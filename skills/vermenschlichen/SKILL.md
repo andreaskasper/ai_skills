@@ -1,6 +1,6 @@
 ---
 name: vermenschlichen
-description: "Schreibregeln für natürliche, sachliche deutsche Texte, die typische KI-Verräter vermeiden. Immer anwenden, wenn auf Deutsch geschrieben wird – ob Chat-Antwort, Bericht, Artikel, E-Mail, Zusammenfassung, Dokument oder Social-Media-Post. Auch dann nutzen, wenn nicht ausdrücklich nach Stil oder Schreibregeln gefragt wird, und immer dann, wenn jemand einen Text vermenschlichen, entkünsteln oder weniger nach KI klingen lassen will. Ziel ist, dass kein deutscher Text die Muster aufweist, an denen man KI-generierte Inhalte erkennt (aufgeblähte Bedeutung, Werbesprache, Floskeln, Gedankenstrich-Häufung, Überstrukturierung, Fazit- und Herausforderungen-Abschnitte, erfundene Belege, technische Artefakte, Dialogreste). Grundlage sind die Wikipedia-Seiten Anzeichen für KI-generierte Inhalte (deutsch) und Signs of AI writing (englisch)."
+description: "Schreibregeln für natürliche, sachliche deutsche Texte, die typische KI-Verräter vermeiden. Immer anwenden, wenn auf Deutsch geschrieben wird – ob Chat-Antwort, Bericht, Artikel, E-Mail, Zusammenfassung, Dokument oder Social-Media-Post. Auch dann nutzen, wenn nicht ausdrücklich nach Stil oder Schreibregeln gefragt wird. Nutze, wenn jemand einen Text vermenschlichen, entkünsteln oder weniger nach KI klingen lassen will, z. B. „klingt nach KI“, „mach das natürlicher“, „KI-Floskeln raus“, „humanize this German text“, „make it sound less like AI“. Ziel ist, dass kein deutscher Text die Muster aufweist, an denen man KI-generierte Inhalte erkennt (aufgeblähte Bedeutung, Werbesprache, Floskeln, Gedankenstrich-Häufung, Überstrukturierung, Fazit- und Herausforderungen-Abschnitte, erfundene Belege, technische Artefakte, Dialogreste)."
 ---
 
 # Vermenschlichen: deutscher Schreibstil ohne KI-Muster
@@ -10,6 +10,9 @@ Diese Regeln sorgen dafür, dass deutsche Texte natürlich, sachlich und vertrau
 Grundlage sind die Sammlungen der Wikipedia-Communitys: [Anzeichen für KI-generierte Inhalte](https://de.wikipedia.org/wiki/Wikipedia:Anzeichen_f%C3%BCr_KI-generierte_Inhalte) (deutsch) und [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) (englisch). Die englische Seite ist ausführlicher; ihre Beobachtungen sind hier auf das Deutsche übertragen.
 
 Die Regeln sind keine Verbote einzelner Wörter, sondern Hinweise auf wiederkehrende Muster. Jedes Muster hat einen Grund. Wer den Grund versteht, kann im Zweifel selbst entscheiden. Kein einzelnes Merkmal beweist maschinelle Herkunft – verdächtig ist die Häufung. Umgekehrt gilt: Ein Text wird nicht dadurch gut, dass er alle Verräter vermeidet; er braucht auch Substanz (konkrete Fakten, echte Beispiele, prüfbare Quellen).
+
+## Selbstoptimierung
+Weicht ein Lauf von diesem Skill ab (Fehler oder Feld, das hier nicht steht; geänderte Oberfläche; du musstest improvisieren; der User korrigiert das Ergebnis), erst die Aufgabe abschließen, dann den Skill `skill-self-improvement` laden und einen Verbesserungsvorschlag machen. Die Skill-Dateien nicht direkt ändern: in Claude-Apps sind sie eine schreibgeschützte Kopie. Typische Signale hier: der User streicht oder ersetzt eine Formulierung, die hier nicht als Muster steht; ein Leser bemängelt KI-Klang trotz Selbstcheck; eine Regel macht den Text erkennbar schlechter; die Wikipedia-Seiten nennen ein neues Muster.
 
 ## Grundhaltung
 
@@ -29,49 +32,49 @@ Behandle eine unbelegte Behauptung als möglichen Fehler, nicht als Tatsache. Fo
 
 ## Sprache und Ton
 
-Vermeide aufgeblähte Bedeutung. Das Thema muss sich nicht ständig für seine Wichtigkeit rechtfertigen. Meide Wendungen wie „spielt eine bedeutende Rolle", „unterstreicht die Bedeutung", „steht als Zeugnis für", „gilt als Wendepunkt", „hinterlässt einen bleibenden Eindruck", „tief verwurzelt", „unerschütterlich". Nenne stattdessen, was konkret geschah oder gilt.
+Vermeide aufgeblähte Bedeutung. Das Thema muss sich nicht ständig für seine Wichtigkeit rechtfertigen. Meide Wendungen wie „spielt eine bedeutende Rolle“, „unterstreicht die Bedeutung“, „steht als Zeugnis für“, „gilt als Wendepunkt“, „hinterlässt einen bleibenden Eindruck“, „tief verwurzelt“, „unerschütterlich“. Nenne stattdessen, was konkret geschah oder gilt.
 
-Meide Werbesprache. Wendungen wie „reiches kulturelles Erbe", „atemberaubend", „beeindruckende Schönheit", „bleibendes Vermächtnis", „im Herzen von", „unbedingt sehen" gehören in Prospekte, nicht in sachliche Texte. Bleib neutral, auch bei Themen, die man leicht emotional auflädt (Orte, Kultur, Personen, Arten).
+Meide Werbesprache. Wendungen wie „reiches kulturelles Erbe“, „atemberaubend“, „beeindruckende Schönheit“, „bleibendes Vermächtnis“, „im Herzen von“, „unbedingt sehen“ gehören in Prospekte, nicht in sachliche Texte. Bleib neutral, auch bei Themen, die man leicht emotional auflädt (Orte, Kultur, Personen, Arten).
 
-Meide redaktionelle Kommentare, mit denen sich der Text selbst bewertet: „es ist wichtig zu beachten", „es ist bemerkenswert, dass", „erwähnenswert ist", „keine Betrachtung wäre vollständig ohne". Wenn etwas wichtig ist, zeigt sich das am Inhalt, nicht an der Ankündigung.
+Meide redaktionelle Kommentare, mit denen sich der Text selbst bewertet: „es ist wichtig zu beachten“, „es ist bemerkenswert, dass“, „erwähnenswert ist“, „keine Betrachtung wäre vollständig ohne“. Wenn etwas wichtig ist, zeigt sich das am Inhalt, nicht an der Ankündigung.
 
 Trag keine Meinung oder Interpretation als Fakt ein. Wenn eine Einschätzung nötig ist, schreib zu, wer sie vertritt.
 
-Belege Bekanntheit nicht durch Behauptung. KI-Texte führen gern vor, dass ein Thema wichtig sei, indem sie die Medienberichterstattung selbst zum Inhalt machen: „wurde in überregionalen Medien besprochen", „fand Beachtung in der Fachpresse", „unterhält eine aktive Präsenz in sozialen Medien". Auch das Aufzählen der Quellengattung („unabhängige Berichterstattung", „regionale Medien") gehört dazu. Schreib, was passiert ist, und setz den Beleg als Beleg – nicht als Argument in den Fließtext.
+Belege Bekanntheit nicht durch Behauptung. KI-Texte führen gern vor, dass ein Thema wichtig sei, indem sie die Medienberichterstattung selbst zum Inhalt machen: „wurde in überregionalen Medien besprochen“, „fand Beachtung in der Fachpresse“, „unterhält eine aktive Präsenz in sozialen Medien“. Auch das Aufzählen der Quellengattung („unabhängige Berichterstattung“, „regionale Medien“) gehört dazu. Schreib, was passiert ist, und setz den Beleg als Beleg – nicht als Argument in den Fließtext.
 
-Meide vage Autoritäten und Weasel-Wording: „Beobachter meinen", „Kritiker argumentieren", „Branchenberichte zeigen", „es wird oft gesagt", „Studien zeigen". Nenne konkret, wer etwas sagt, oder lass die Behauptung weg. Übertrage nicht die Sicht einer einzelnen Quelle auf eine große, unbestimmte Gruppe.
+Meide vage Autoritäten und Weasel-Wording: „Beobachter meinen“, „Kritiker argumentieren“, „Branchenberichte zeigen“, „es wird oft gesagt“, „Studien zeigen“. Nenne konkret, wer etwas sagt, oder lass die Behauptung weg. Übertrage nicht die Sicht einer einzelnen Quelle auf eine große, unbestimmte Gruppe.
 
-Meide typische KI-Modewörter, wenn ein schlichteres Wort dasselbe sagt: „eintauchen", „beleuchten", „lebendig", „facettenreich", „nahtlos", „robust", „entscheidend"/„zentral" als Dauerbetonung, „spannend" als Füllwort, „Landschaft" als Metapher („die digitale Landschaft"). Ebenso pseudo-wissenschaftliche Aufblähung („kausal", „empirisch", „korreliert") ohne echte Daten dahinter.
+Meide typische KI-Modewörter, wenn ein schlichteres Wort dasselbe sagt: „eintauchen“, „beleuchten“, „lebendig“, „facettenreich“, „nahtlos“, „robust“, „entscheidend“/„zentral“ als Dauerbetonung, „spannend“ als Füllwort, „Landschaft“ als Metapher („die digitale Landschaft“). Ebenso pseudo-wissenschaftliche Aufblähung („kausal“, „empirisch“, „korreliert“) ohne echte Daten dahinter.
 
 ## Satzbau und Formulierung
 
-Setze Gedankenstriche sparsam. Gehäufte Gedankenstriche – vor allem dort, wo ein Komma, Doppelpunkt oder eine Klammer natürlicher wäre – gelten inzwischen als das bekannteste KI-Signal überhaupt. Ein bewusst gesetzter Gedankenstrich ist in Ordnung; mehrere pro Absatz sind ein Warnsignal. Bei Spannen (Zahlen, Daten, Strecken) gehört der Bis-Strich (–), nicht der Bindestrich: „2020–2024", nicht „2020-2024".
+Setze Gedankenstriche sparsam. Gehäufte Gedankenstriche – vor allem dort, wo ein Komma, Doppelpunkt oder eine Klammer natürlicher wäre – gelten inzwischen als das bekannteste KI-Signal überhaupt. Ein bewusst gesetzter Gedankenstrich ist in Ordnung; mehrere pro Absatz sind ein Warnsignal. Bei Spannen (Zahlen, Daten, Strecken) gehört der Bis-Strich (–), nicht der Bindestrich: „2020–2024“, nicht „2020-2024“.
 
-Setze Verbindungswörter sparsam und natürlich ein. „Darüber hinaus", „zusätzlich", „außerdem", „ferner", „andererseits" reihen sich in KI-Texten oft mechanisch aneinander. Ein gelegentliches Bindewort ist gut; jeder Absatz, der mit einem beginnt, ist ein Warnsignal.
+Setze Verbindungswörter sparsam und natürlich ein. „Darüber hinaus“, „zusätzlich“, „außerdem“, „ferner“, „andererseits“ reihen sich in KI-Texten oft mechanisch aneinander. Ein gelegentliches Bindewort ist gut; jeder Absatz, der mit einem beginnt, ist ein Warnsignal.
 
-Meide den formelhaften negativen Parallelismus: „nicht nur …, sondern auch …", „es geht nicht nur um …, sondern", „es ist kein …, sondern ein …" – und die umgekehrte Form „X statt Y" als Dauerfigur. Solche Konstruktionen wirken argumentativ und werblich statt sachlich.
+Meide den formelhaften negativen Parallelismus: „nicht nur …, sondern auch …“, „es geht nicht nur um …, sondern“, „es ist kein …, sondern ein …“ – und die umgekehrte Form „X statt Y“ als Dauerfigur. Solche Konstruktionen wirken argumentativ und werblich statt sachlich.
 
-Scheue schlichte Kopula-Sätze nicht. KI-Texte weichen „ist/sind/hat" systematisch aus: „dient als", „fungiert als", „stellt dar", „markiert", „bietet", „verfügt über", „bezeichnet" (in Definitionen). „Das Gebäude ist das Ausstellungshaus" ist besser als „Das Gebäude fungiert als Ausstellungshaus". Dasselbe gilt für „es gibt", „es hat" und andere einfache Konstruktionen, um die KI-Texte einen Bogen machen.
+Scheue schlichte Kopula-Sätze nicht. KI-Texte weichen „ist/sind/hat“ systematisch aus: „dient als“, „fungiert als“, „stellt dar“, „markiert“, „bietet“, „verfügt über“, „bezeichnet“ (in Definitionen). „Das Gebäude ist das Ausstellungshaus“ ist besser als „Das Gebäude fungiert als Ausstellungshaus“. Dasselbe gilt für „es gibt“, „es hat“ und andere einfache Konstruktionen, um die KI-Texte einen Bogen machen.
 
-Nimm das schlichte Verb, nicht das steife Synonym. KI greift systematisch zur gehobenen Variante: „verfasste" statt „schrieb", „verstarb" statt „starb", „siedelte über" statt „zog um", „bediente sich" statt „nutzte", „erachtete" statt „hielt für", „leistete Unterstützung" statt „half". Umgekehrt ist das schlichte Wort ein Merkmal menschlicher Texte.
+Nimm das schlichte Verb, nicht das steife Synonym. KI greift systematisch zur gehobenen Variante: „verfasste“ statt „schrieb“, „verstarb“ statt „starb“, „siedelte über“ statt „zog um“, „bediente sich“ statt „nutzte“, „erachtete“ statt „hielt für“, „leistete Unterstützung“ statt „half“. Umgekehrt ist das schlichte Wort ein Merkmal menschlicher Texte.
 
-Erzwinge keine Synonym-Rotation. KI vermeidet Wortwiederholungen um jeden Preis und greift zu immer neuen Ersatzwörtern („die Stadt … die Metropole … der urbane Raum"). Ein natürlicher Text darf dasselbe Wort wiederholen, wenn es das richtige ist.
+Erzwinge keine Synonym-Rotation. KI vermeidet Wortwiederholungen um jeden Preis und greift zu immer neuen Ersatzwörtern („die Stadt … die Metropole … der urbane Raum“). Ein natürlicher Text darf dasselbe Wort wiederholen, wenn es das richtige ist.
 
-Meide das rhetorische Dreierschema (Trikolon): drei aufgereihte Adjektive oder Kurzphrasen zur Betonung („schnell, zuverlässig und elegant"), „sowohl … als auch … und". Ein sachlicher deutscher Text kommt mit wenig Rhetorik aus.
+Meide das rhetorische Dreierschema (Trikolon): drei aufgereihte Adjektive oder Kurzphrasen zur Betonung („schnell, zuverlässig und elegant“), „sowohl … als auch … und“. Ein sachlicher deutscher Text kommt mit wenig Rhetorik aus.
 
-Meide gehäufte Partizip-I-Konstruktionen als angehängte Deutungen: „…, wodurch die Bedeutung unterstrichen wird", „…, was seine Rolle hervorhebt", „gewährleistend", „widerspiegelnd". Diese Wendungen schieben oft eine leere Bewertung nach. Schreib lieber einen eigenen Satz oder lass die Deutung weg.
+Meide gehäufte Partizip-I-Konstruktionen als angehängte Deutungen: „…, wodurch die Bedeutung unterstrichen wird“, „…, was seine Rolle hervorhebt“, „gewährleistend“, „widerspiegelnd“. Diese Wendungen schieben oft eine leere Bewertung nach. Schreib lieber einen eigenen Satz oder lass die Deutung weg.
 
-Meide unechte Aufzählungsspannen mit „von … bis", wenn sie nur Beispiele aneinanderreihen und dabei enzyklopädisch-werblich klingen.
+Meide unechte Aufzählungsspannen mit „von … bis“, wenn sie nur Beispiele aneinanderreihen und dabei enzyklopädisch-werblich klingen.
 
-Streich nicht heraus, was menschliche Texte ausmacht. KI vermeidet von sich aus einige Konstruktionen, die in deutschen Gebrauchstexten völlig normal sind: abschwächende Wörter („vielleicht", „eher", „ziemlich", „sehr", „meist"), klare Superlative und eindeutige Aussagen („der erste", „der einzige", „einer der größten") und die etwas umständliche, aber geläufige Wendung („um … zu", „infolge", „die Tatsache, dass"). Wenn so etwas zutrifft und passt, lass es stehen. Ein Text wird nicht menschlicher, indem man ihn glatt schleift.
+Streich nicht heraus, was menschliche Texte ausmacht. KI vermeidet von sich aus einige Konstruktionen, die in deutschen Gebrauchstexten völlig normal sind: abschwächende Wörter („vielleicht“, „eher“, „ziemlich“, „sehr“, „meist“), klare Superlative und eindeutige Aussagen („der erste“, „der einzige“, „einer der größten“) und die etwas umständliche, aber geläufige Wendung („um … zu“, „infolge“, „die Tatsache, dass“). Wenn so etwas zutrifft und passt, lass es stehen. Ein Text wird nicht menschlicher, indem man ihn glatt schleift.
 
 ## Struktur
 
 Fasse dich. KI-Texte sind oft zu lang und zu stark gegliedert. Nicht jeder Gedanke braucht eine eigene Überschrift, und nicht jeder Text braucht Überschriften. Bei kurzen Antworten reicht meist Fließtext.
 
-Verzichte auf einen abschließenden „Fazit"-Abschnitt und auf zusammenfassende Absätze am Ende, die den Text bloß wiederholen. Das ist Stil wissenschaftlicher Aufsätze, nicht sachlicher Gebrauchstexte. Eine Zusammenfassung gehört – wenn überhaupt – an den Anfang.
+Verzichte auf einen abschließenden „Fazit“-Abschnitt und auf zusammenfassende Absätze am Ende, die den Text bloß wiederholen. Das ist Stil wissenschaftlicher Aufsätze, nicht sachlicher Gebrauchstexte. Eine Zusammenfassung gehört – wenn überhaupt – an den Anfang.
 
-Verzichte auf den schematischen „Herausforderungen und Ausblick"-Baustein („Trotz seiner Erfolge steht … vor mehreren Herausforderungen", „Zukunftsaussichten", „Vermächtnis"). Diese Struktur ist ein starker KI-Verräter. Erwähne konkrete Probleme dort, wo sie inhaltlich hingehören, ohne Formel.
+Verzichte auf den schematischen „Herausforderungen und Ausblick“-Baustein („Trotz seiner Erfolge steht … vor mehreren Herausforderungen“, „Zukunftsaussichten“, „Vermächtnis“). Diese Struktur ist ein starker KI-Verräter. Erwähne konkrete Probleme dort, wo sie inhaltlich hingehören, ohne Formel.
 
 Vermeide unpassende, oft zweiteilige Marketing-Zwischenüberschriften. Überschriften sollen benennen, nicht anpreisen.
 
@@ -81,11 +84,11 @@ Setze Fettdruck sparsam. Ganze Absätze mit hervorgehobenen Schlagwörtern sind 
 
 Nutze Aufzählungen nur, wenn der Inhalt wirklich eine Liste ist. Fließende Zusammenhänge gehören in Sätze. Wenn du eine Liste setzt, verwende die Formatierung des Zielsystems statt kopierter Zeichen wie •, - oder – am Zeilenanfang.
 
-Meide das Schema „Aufzählungspunkt + fettes Schlagwort + Doppelpunkt + Erklärung" („**Flexibilität:** Das System erlaubt …"). Diese Inline-Header-Listen sind eines der auffälligsten KI-Formatmuster. Ebenso: keine Mini-Tabellen für Inhalte, die in einen Satz passen.
+Meide das Schema „Aufzählungspunkt + fettes Schlagwort + Doppelpunkt + Erklärung“ („**Flexibilität:** Das System erlaubt …“). Diese Inline-Header-Listen sind eines der auffälligsten KI-Formatmuster. Ebenso: keine Mini-Tabellen für Inhalte, die in einen Satz passen.
 
 Halte die Überschriften-Hierarchie ein und überspringe keine Ebenen.
 
-Schreib Überschriften deutsch, nicht nach englischem Muster. „Die Wichtigsten Vorteile Im Überblick" verrät eine aus dem Englischen übernommene Titel-Großschreibung. Im Deutschen wird in Überschriften normal groß- und kleingeschrieben.
+Schreib Überschriften deutsch, nicht nach englischem Muster. „Die Wichtigsten Vorteile Im Überblick“ verrät eine aus dem Englischen übernommene Titel-Großschreibung. Im Deutschen wird in Überschriften normal groß- und kleingeschrieben.
 
 Setze keine Emojis vor Überschriften oder Aufzählungspunkte und generell keine Emojis in sachlichen Texten, sofern nicht ausdrücklich gewünscht.
 
@@ -95,23 +98,23 @@ Nutze keine dekorativen Trennlinien zwischen Abschnitten.
 
 Lass keine Markdown-Reste in Umgebungen stehen, die kein Markdown darstellen: `**fett**`, `###`-Überschriften, Backticks oder kopierte Listenzeichen wirken dort wie Fremdkörper.
 
-Entferne Chatbot-Zitierreste rückstandslos: URLs mit `utm_source=chatgpt.com`, Fragmente wie „oaicite", „:contentReference", „turn0search" (ChatGPT), „[cite: 1]", „[span_1]" (Gemini) oder „grok_render_citation_card" (Grok) sind eindeutige Verräter. Prüfe übernommene Links darauf, dass sie existieren und zum genannten Inhalt führen.
+Entferne Chatbot-Zitierreste rückstandslos: URLs mit `utm_source=chatgpt.com`, Fragmente wie „oaicite“, „:contentReference“, „turn0search“ (ChatGPT), „[cite: 1]“, „[span_1]“ (Gemini) oder „grok_render_citation_card“ (Grok) sind eindeutige Verräter. Prüfe übernommene Links darauf, dass sie existieren und zum genannten Inhalt führen.
 
-Verwende Anführungszeichen einheitlich – im Deutschen „so" – und mische keine geraden und typografischen Zeichen im selben Text.
+Verwende Anführungszeichen einheitlich – im Deutschen „so“ – und mische keine geraden und typografischen Zeichen im selben Text.
 
 Liefere keine abgebrochenen Sätze oder abrupt endenden Texte ab; das passiert bei KI-Ausgaben, die mitten in der Generierung abbrechen.
 
 ## Keine Dialog- oder Meta-Reste
 
-Schreib den fertigen Text, nicht das Gespräch darüber. Kein „Ich hoffe, das hilft", „Gerne!", „Natürlich!", „Gute Frage!", „Hier ist der Artikel", „Möchtest du, dass ich …", keine Anrede- und Grußformeln in Fließtexten oder Diskussionsbeiträgen.
+Schreib den fertigen Text, nicht das Gespräch darüber. Kein „Ich hoffe, das hilft“, „Gerne!“, „Natürlich!“, „Gute Frage!“, „Hier ist der Artikel“, „Möchtest du, dass ich …“, keine Anrede- und Grußformeln in Fließtexten oder Diskussionsbeiträgen.
 
-Keine Briefformeln in Texten, die keine Briefe sind: „Ich hoffe, diese Nachricht erreicht Sie wohlbehalten" gehört nicht in Artikel oder Beiträge.
+Keine Briefformeln in Texten, die keine Briefe sind: „Ich hoffe, diese Nachricht erreicht Sie wohlbehalten“ gehört nicht in Artikel oder Beiträge.
 
-Keine Selbstbeschreibung des eigenen Entwurfs: „Dieser Text wahrt einen neutralen Ton", „Die Struktur folgt den Richtlinien" – solche Meta-Sätze sind übernommene Chatbot-Kommentare, kein Inhalt.
+Keine Selbstbeschreibung des eigenen Entwurfs: „Dieser Text wahrt einen neutralen Ton“, „Die Struktur folgt den Richtlinien“ – solche Meta-Sätze sind übernommene Chatbot-Kommentare, kein Inhalt.
 
-Keine Hinweise auf den eigenen Wissensstand oder Trainingsschluss: „Stand meines letzten Updates", „bis zu meinem Wissensstand", „soweit in den verfügbaren Quellen ersichtlich". Wenn etwas unsicher ist, sag es sachlich zur Sache, nicht als Bekenntnis über das eigene Modell.
+Keine Hinweise auf den eigenen Wissensstand oder Trainingsschluss: „Stand meines letzten Updates“, „bis zu meinem Wissensstand“, „soweit in den verfügbaren Quellen ersichtlich“. Wenn etwas unsicher ist, sag es sachlich zur Sache, nicht als Bekenntnis über das eigene Modell.
 
-Lass keinen Platzhaltertext stehen („[Name einfügen]", „hier Details ergänzen").
+Lass keinen Platzhaltertext stehen („[Name einfügen]“, „hier Details ergänzen“).
 
 ## Was kein Verräter ist
 
@@ -127,19 +130,12 @@ Und der Umkehrschluss gilt ohnehin nicht: Ein Text ohne diese Muster kann trotzd
 
 ## Kurz-Selbstcheck vor dem Absenden
 
-Prüfe den Text vor der Ausgabe kurz gegen diese Fragen:
+1. Sind alle Quellen und Fakten echt und prüfbar, und stützt jede Quelle die Aussage, an der sie hängt?
+2. Steht Bedeutungs-, Werbe- oder Medienpräsenz-Sprache drin, oder eine vage Autorität („Kritiker meinen“)?
+3. Satzbau: gehäufte Gedankenstriche, Absätze mit „Darüber hinaus“, Ausweichen vor „ist/hat“, steife Synonyme, Synonym-Rotation?
+4. Struktur: „Fazit“- oder „Herausforderungen“-Baustein, zu viel Fett, Gliederung oder Inline-Header-Listen?
+5. Reste: Markdown- oder Zitierartefakte, gemischte Anführungszeichen, Dialog-, Meta- oder Platzhaltersätze?
 
-- Sind alle genannten Quellen und Fakten echt und prüfbar – und stützt jede Quelle wirklich die Aussage, an der sie hängt?
-- Steht irgendwo Werbe- oder Bedeutungssprache, die man streichen kann?
-- Gibt es einen „Fazit"- oder „Herausforderungen"-Baustein oder eine schließende Wiederholung?
-- Beginnen Absätze mechanisch mit „Darüber hinaus", „Zusätzlich" usw.?
-- Häufen sich Gedankenstriche, wo Komma oder Doppelpunkt reichen?
-- Weicht der Text schlichtem „ist/hat" aus („dient als", „fungiert als"), greift er zum steifen Synonym („verfasste", „verstarb") oder rotiert er zwanghaft Synonyme?
-- Behauptet der Text Bedeutung über Medienpräsenz statt über Inhalt?
-- Ist zu viel fett, zu viel gegliedert, zu viel Liste?
-- Stecken technische Artefakte im Text (Markdown-Reste, Chatbot-Zitierreste, gemischte Anführungszeichen)?
-- Steckt ein Dialog- oder Meta-Rest im Text?
-
-Wenn eine Antwort „ja" (bzw. bei der ersten Frage „nein") lautet: überarbeiten. Aber überarbeite gezielt – nicht jeder förmliche Satz und nicht jedes „vielleicht" ist ein Fehler, siehe „Was kein Verräter ist".
+Bei einem Treffer gezielt überarbeiten, nicht pauschal glätten: nicht jeder förmliche Satz und nicht jedes „vielleicht“ ist ein Fehler (siehe „Was kein Verräter ist“).
 
 Für englische Texte gibt es die Variante `humanize-english`.
