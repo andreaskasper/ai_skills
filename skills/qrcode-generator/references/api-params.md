@@ -1,6 +1,16 @@
 # QR Code Monkey API Reference
 
-Complete parameter reference for the qrcode-monkey.com API.
+Parameter reference for the qrcode-monkey.com API (`GET https://api.qrcode-monkey.com/qr/custom?data=…&config=<JSON>&size=…&file=…`). Style names verified 10/2026. An unknown body, eye or ball name returns no error but an unscannable image, so stick to the names below.
+
+Contents:
+- Data encoding
+- Style parameters: body styles, eye frames, eye balls
+- Color parameters
+- Rotation and flip options
+- Output options
+- Logo
+- Color best practices
+- Common presets
 
 ## Data Encoding
 
@@ -25,7 +35,6 @@ The `data` parameter can contain:
 - `circular` - Circular wave pattern
 - `edge-cut` - Cut edge squares
 - `edge-cut-smooth` - Smooth cut edges
-- `japanese` - Japanese style pattern
 - `leaf` - Leaf-shaped pattern
 - `pointed` - Pointed squares
 - `pointed-edge-cut` - Pointed with cut edges
@@ -49,11 +58,13 @@ The `data` parameter can contain:
 - `frame6` - Circle with squared corners
 - `frame7` - Leaf frame
 - `frame8` - Pointed frame
+- `frame9` - (valid, unnamed variant)
 - `frame10` - Diamond frame
 - `frame11` - Circular frame variant
 - `frame12` - Star frame
 - `frame13` - Flower frame
 - `frame14` - Shield frame
+- `frame15` - (valid, unnamed variant)
 - `frame16` - Custom artistic frame
 
 ### Eye Balls (`eyeBall`)
@@ -61,10 +72,12 @@ The `data` parameter can contain:
 - `ball1` - Rounded square ball
 - `ball2` - Extra rounded ball
 - `ball3` - Circle ball
+- `ball4` - (valid, unnamed variant)
 - `ball5` - Diamond ball
 - `ball6` - Rounded diamond
 - `ball7` - Leaf ball
 - `ball8` - Star ball
+- `ball9` - (valid, unnamed variant)
 - `ball10` - Flower ball
 - `ball11` - Shield ball
 - `ball12` - Heart ball
@@ -111,13 +124,13 @@ Same options as eye frame rotation.
 
 ## Output Options
 
-- `size` - QR code size in pixels (1-3480, default: 300)
+- `size` - QR code size in pixels (1-3480; API default 300, script default 500); the returned image is about 16 % larger because of the quiet zone
 - `file` - Output format: `png`, `svg`, `jpg`, `pdf`, `eps`
   - Note: `pdf` and `eps` don't support gradients
 
 ## Logo Options
 
-Logos can be embedded by providing a base64-encoded image in the request body (requires POST request, not GET).
+The API can embed a logo (uploaded image referenced in the config, POST request). `scripts/generate_qrcode.py` does **not** implement this; for a logo, add it to the finished image yourself (e.g. with Pillow, centred, at most about 20 % of the width, with error correction level H) and test that the code still scans.
 
 ## Color Best Practices
 
@@ -143,7 +156,7 @@ gradientColor1: #667eea
 gradientColor2: #764ba2
 gradientType: linear
 bgColor: #FFFFFF
-body: rounded
+body: round
 ```
 
 ### Minimalist

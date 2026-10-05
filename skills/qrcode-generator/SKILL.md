@@ -1,157 +1,84 @@
 ---
 name: qrcode-generator
-description: Generate customizable QR codes (URLs, text, vCards, WiFi credentials, etc.) with colors, gradients, custom shapes and brand colors extracted from a website, via the free qrcode-monkey.com API with an offline fallback. Output as PNG, SVG, JPG, PDF or EPS. Use whenever someone wants to create or style a QR code. Triggers include "create a QR code", "make a QR code", "generate QR", "QR code for", "QR-Code erstellen", "mach mir einen QR-Code", "QR-Code für", "QR-Code in unseren Farben".
+description: Generate customizable QR codes (URLs, text, vCards, WiFi credentials, etc.) with colors, gradients, custom shapes and brand colors extracted from a website, via the free qrcode-monkey.com API, or locally for sensitive content. Output as PNG, SVG, JPG, PDF or EPS. Use whenever someone wants to create or style a QR code. Triggers include "create a QR code", "make a QR code", "generate QR", "QR code for", "WiFi QR code", "QR-Code erstellen", "mach mir einen QR-Code", "QR-Code für", "WLAN-QR-Code", "QR-Code in unseren Farben".
 ---
 
 # QR Code Generator
 
-Generate high-quality, customizable QR codes using the qrcode-monkey.com API.
+Styled QR codes come from the qrcode-monkey.com API through `scripts/generate_qrcode.py`. Sensitive content is generated locally with `segno`, because the API receives the encoded data as a URL parameter.
 
-## Core Workflow
+## Self-improvement
+If a run deviates from this skill (an error or field not covered here, a changed UI, you had to improvise, the user corrects the result), finish the task first, then load the `skill-self-improvement` skill and propose an improvement. Don't edit the skill files directly: in Claude apps they are a read-only copy. Typical signals here: the API returns an image without data modules or an error for a style listed here, a style name the user asks for is missing from the list, a code that does not scan, extracted brand colors that are unusable.
 
-### 1. Understand the Request
+## 1. Decide: API or local
 
-Determine:
-- **Content to encode**: URL, text, vCard, WiFi credentials, etc.
-- **Styling preferences**: Colors, shapes, gradients
-- **Brand matching**: Extract colors from a website if requested
-- **Output requirements**: Size and format
+| Content | Where |
+|---|---|
+| URLs, public text, event links | API (styled) |
+| WiFi passwords, vCards, phone numbers, e-mail addresses of real people, anything confidential | **local** (section 3), unless the user explicitly accepts sending it to qrcode-monkey |
+| API unreachable or rate-limited | local |
 
-### 2. Generate the QR Code
+Custom body and eye shapes exist only in the API; locally you get colors, size and format.
 
-Use `scripts/generate_qrcode.py` for reliable QR code generation:
-
-```bash
-python3 scripts/generate_qrcode.py "https://example.com" output.png \
-  --size 500 \
-  --body-color "#0277bd" \
-  --bg-color "#FFFFFF"
-```
-
-**Key script parameters**:
-- First argument: Data to encode
-- Second argument: Output path
-- `--size`: Pixels (default 300, max 3480)
-- `--body-color`: Main QR code color (hex)
-- `--bg-color`: Background color (hex)
-- `--body`: Style (square, dot, circle, rounded, etc.)
-- `--eye`: Eye frame style (frame0-frame16)
-- `--eye-ball`: Eye ball style (ball0-ball19)
-- `--gradient-color1/2`: For gradient effects
-- `--file-type`: Output format (png, svg, jpg, pdf, eps)
-
-### 3. Extract Brand Colors (Optional)
-
-When users request QR codes matching a website's design, use `scripts/extract_colors.py`:
+## 2. Styled code via the API
 
 ```bash
-python3 scripts/extract_colors.py "https://example.com" --json
+python3 scripts/generate_qrcode.py "https://example.com" qrcode.png \
+  --body-color "#0277bd" --bg-color "#FFFFFF"
 ```
 
-This returns:
-- `primary`: Main brand color
-- `secondary`: Contrasting color
-- `accent`: Additional brand color (if found)
+| Option | Default | Values |
+|---|---|---|
+| `--size` | 500 | pixels, max 3480; the API adds a quiet zone (500 → 580 px image) |
+| `--body-color`, `--bg-color` | `#000000`, `#FFFFFF` | hex |
+| `--body` | `square` | 21 styles, e.g. `round`, `dot`, `rounded-in`, `diamond`; full list in `references/api-params.md` |
+| `--eye` / `--eye-ball` | `frame0` / `ball0` | `frame0`–`frame16` / `ball0`–`ball19` |
+| `--gradient-color1/2`, `--gradient-type`, `--gradient-on-eyes` | off, `linear` | gradient instead of body color |
+| `--file-type` | `png` | `png`, `svg`, `jpg`, `pdf`, `eps` (no gradients in PDF/EPS) |
 
-Apply these colors to the QR code for brand consistency.
+The script rejects unknown style names, because the API silently returns an unscannable image (eyes only) for them.
 
-## Common Use Cases
-
-### Simple URL QR Code
+Styled example:
 ```bash
-python3 scripts/generate_qrcode.py "https://example.com/event/2026" qrcode.png
+python3 scripts/generate_qrcode.py "https://example.com/event" qrcode.png \
+  --body round --eye frame2 --eye-ball ball3 \
+  --gradient-color1 "#667eea" --gradient-color2 "#764ba2" --size 800
 ```
 
-### Brand-Matched QR Code
-1. Extract colors: `python3 scripts/extract_colors.py "https://example.com" --json`
-2. Generate with colors: Use extracted primary as `--body-color`
+**Brand colors.** `python3 scripts/extract_colors.py "https://example.com" --json` returns `primary`, `secondary`, `accent` and `all_colors` from the site's CSS. "Primary" is just the most frequent color and may be light (e.g. `#eeeeee`); use the darkest suitable brand color as body color on a white or very light background.
 
-### Contact Information (vCard)
-Encode vCard format:
-```
-BEGIN:VCARD
-VERSION:3.0
-FN:Jane Doe
-TEL:+49123456789
-EMAIL:jane@example.com
-END:VCARD
-```
+**Defaults when the user specifies nothing:** black on white, `square`, 500 px, PNG. For print, SVG or PDF.
 
-### WiFi Credentials
-```bash
-python3 scripts/generate_qrcode.py "WIFI:T:WPA;S:NetworkName;P:Password;;" wifi.png
-```
+**Contrast:** foreground clearly darker than background (roughly: background brightness > 200, foreground < 100 on a 0–255 scale). Never invert (light code on dark background) unless the user insists and tests it.
 
-### Styled QR Code
-```bash
-python3 scripts/generate_qrcode.py "Hello World" qrcode.png \
-  --body rounded \
-  --eye frame2 \
-  --eye-ball ball3 \
-  --gradient-color1 "#667eea" \
-  --gradient-color2 "#764ba2" \
-  --gradient-type linear \
-  --size 800
-```
-
-## Decision Framework
-
-**When user doesn't specify styling**:
-- Use black on white (safe default)
-- Size: 500px (good balance of quality and file size)
-- Format: PNG (universal compatibility)
-
-**When "brand matching" or "website design" mentioned**:
-1. Extract colors from the specified website
-2. Use primary color as body color
-3. Use white or light color as background
-4. Apply rounded or modern body style for professional look
-
-**Color safety check**:
-- Always ensure sufficient contrast (light background, dark foreground)
-- Background brightness should be >200
-- Foreground brightness should be <100
-- Verify scannability requirements are met
-
-**Format selection**:
-- PNG: Default, best for most uses
-- SVG: For scalable/print applications
-- JPG: For smaller file sizes
-- PDF/EPS: Professional printing (no gradient support)
-
-## Advanced Customization
-
-For complex styling needs, consult `references/api-params.md` for:
-- Complete body style options (35+ styles)
-- Eye frame and ball combinations
-- Rotation and flip options
-- Gradient configuration details
-
-## Output
-
-Always:
-1. Save the QR code where the user can access it (in claude.ai: `/mnt/user-data/outputs/`, then present the file)
-2. Show or link the file
-3. Mention the encoded data and any styling applied
-4. Suggest testing the QR code with a scanner
-
-## Offline fallback
-
-If the API is unreachable, rate-limited or the data is sensitive (e.g. WiFi passwords you'd rather not send to a third-party service), generate locally:
+## 3. Sensitive content: local with segno
 
 ```bash
-pip install "qrcode[pil]"          # add --break-system-packages on managed Pythons
-python3 -c "import qrcode; qrcode.make('https://example.com').save('qrcode.png')"
+pip install segno          # pure Python, no other dependencies; add --break-system-packages on managed Pythons
 ```
 
-Colors via `qrcode.QRCode(...).make_image(fill_color='#0277bd', back_color='white')`. Custom body/eye shapes are only available through the API.
+```python
+import segno
+from segno import helpers
 
-## Important Notes
+# WiFi: escapes ; , : \ " in SSID and password correctly
+helpers.make_wifi(ssid="MyNetwork", password="YOUR_WIFI_PASSWORD", security="WPA") \
+    .save("wifi.png", scale=10, border=4, dark="#0277bd", light="white")
 
-- **Privacy**: the API is a third-party service; the encoded data is sent to it. For credentials or personal data, prefer the offline fallback.
+# vCard
+helpers.make_vcard(name="Doe;Jane", displayname="Jane Doe",
+                   phone="+49123456789", email="jane@example.com").save("contact.svg", scale=10)
 
-- **Rate limiting**: Don't generate too many QR codes at once (IP may be blocked)
-- **Contrast**: Background must be lighter than foreground for scannability
-- **Size limits**: Maximum 3480 pixels
-- **Gradients**: Not supported in PDF/EPS formats
-- **Testing**: Always recommend users test QR codes before production use
+# any text
+segno.make("Some text", error="m").save("text.pdf", scale=10)
+```
+
+`save()` picks the format from the extension (`png`, `svg`, `pdf`, `eps`). If you build a WiFi string by hand (`WIFI:T:WPA;S:<ssid>;P:<password>;;`), escape `; , : \ "` with a backslash, or the code connects to nothing.
+
+## 4. Deliver
+
+1. Save the file where the user can open it (in Claude apps: `/mnt/user-data/outputs/`, then present it).
+2. Say what is encoded (for WiFi/vCards without repeating the password in clear text) and which styling was applied.
+3. Ask the user to test it with a phone camera before printing.
+
+Further API details (eye colors per corner, flip options, presets): `references/api-params.md`. Don't send large batches to the API in one go; it blocks IPs that request too much.
